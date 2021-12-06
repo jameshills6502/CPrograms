@@ -31,10 +31,11 @@ int main(void)
 			//these allocate memory to contain the whole file]
 			result = fread(buffer,1,lSize,pFile);
 			if (result != lSize){fputs("Reading error", stderr); exit(2);}
-			//these cope the file into the buffer
+			//these copy the file into the buffer
 			printf("%ld", result);
 		}
 		fclose(pFile);
 		free(buffer);
 	}
 }
+
