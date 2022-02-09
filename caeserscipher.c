@@ -9,13 +9,12 @@ char decrypt();
 char revised_upper();
 char encrypt();
 char DEBUG();
-char Input();
 // when passing strings, they have to be passed with pointers!!! hence the *
 // defining of functions
 int main()
 {
 	char plaintext[100] = "", ciphertext[100] = "", space[] = " ", upper_string[100] = "";
-	int shiftvalue, asciivalue, lenplaintext;
+	int shiftvalue[10], asciivalue, lenplaintext;
 
 	printf("\nWelcome to the Caesar cipher program! \n");
 	//home_selection();
@@ -25,16 +24,27 @@ int main()
 int home_selection()
 {	
 	char home_choice;
-	int home_choice_length;
+	int entry[10], loop, take_input;
 	printf("\n----HOME----\n");
 	do{
 		printf("\n Please select one of the following options \n");
 		printf("\n	1. Encrypt	\n");
 		printf("\n	2. Decrypt	\n");
 		printf("\n	3. Quit		\n");
-		printf("\n:");	
-		Input(home_choice);	// gets input //
-		printf("%d", home_choice);
+		printf("\n:");		
+		while((take_input = getchar()) != '\n' && take_input != EOF)
+		{
+			entry[loop] = take_input;
+			loop++;
+			fflush(stdin);
+			if(loop >= 9)
+			{
+				printf("\n Input too large!");
+				break;
+			}
+		}
+		home_choice = entry[loop-1]; // as it takes newline as last input, this removes that //
+		printf("\n Here is the input %d", home_choice);
 		//buffer needs to be cleared!!!
 		int home_choice_ascii = home_choice;
 		if(home_choice_ascii >= 49 && home_choice_ascii<= 51)
@@ -64,12 +74,36 @@ int home_selection()
 	// this repeats until the user chooses to quit the program //
 }
 
-char encrypt(char *plaintext, char *ciphertext, int lenplaintext, int shiftvalue, char *space, char *upper_string)
+char encrypt(char *plaintext, char *ciphertext, int lenplaintext, int *shiftvalue, char *space, char *upper_string)
 {
+	int take_input, loop;
+	loop = 0;
 	printf("\n Please input the sentence you would like to encrypt:");
-	DEBUG(plaintext); 	// takes in blank space as well to allow for sentences //
+	while((take_input = getchar()) != '\n' && take_input != EOF)
+	{
+		plaintext[loop] = take_input;
+		loop++;
+		fflush(stdin);
+		if(loop >= 99)
+		{
+			printf("\n Sorry, input is too large!");
+			break;
+		}
+
+	}
+	loop = 0;
 	printf("\n Please input the shift amount: ");
-	shiftvalue = getchar(); // stores the shift amount in shiftvalue //
+	while((take_input = getchar()) != '\n' && take_input != EOF)
+	{
+		shiftvalue[loop] = take_input;
+		loop++;
+		fflush(stdin);
+		if(loop >= 9);
+		{
+			printf("\n Sorry, input is too large!");
+			break;
+		}
+	}
 	lenplaintext = strlen(plaintext); // length of plaintext found //
 	revised_upper(lenplaintext, plaintext, upper_string); // calls revised_upper function //
 	revised_string_check(space, upper_string, ciphertext, shiftvalue); // calls revised_string_check function // 
@@ -168,30 +202,6 @@ char revised_upper(char *string,char *upper_string)
 	return *upper_string;
 	memset(upper_string, 0, string_length); // re-initialises upper_string so it can be used again //
 }
-
-char Input(int input)
-{
-	char *buffer, h;
-	int input_length;
-	size_t bufsize = 32;
-	input_length = sizeof input;
-	buffer = (char *)malloc(bufsize * sizeof(char));
-	if(buffer == NULL)
-	{
-		perror("\n Unable to allocate buffer");
-		exit(1);
-	}
-	while((input = getchar()) != '\n' && input != EOF)
-	{
-		fflush(stdin);
-	}
-	printf("\n %d", input);
-	h = input;
-	memset(&input, 0, input_length);
-	return input;
-
-}
-
 
 char DEBUG(char *output)
 {
