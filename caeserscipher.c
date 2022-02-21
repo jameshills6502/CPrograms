@@ -14,7 +14,7 @@ char DEBUG();
 int main()
 {
 	char plaintext[100] = "", ciphertext[100] = "", space[] = " ", upper_string[100] = "";
-	int shiftvalue[10], asciivalue, lenplaintext;
+	int shiftvalue, asciivalue, lenplaintext;
 
 	printf("\nWelcome to the Caesar cipher program! \n");
 	//home_selection();
@@ -74,14 +74,14 @@ int home_selection()
 	// this repeats until the user chooses to quit the program //
 }
 
-char encrypt(char *plaintext, char *ciphertext, int lenplaintext, int *shiftvalue, char *space, char *upper_string)
+char encrypt(char *plaintext, char *ciphertext, int lenplaintext, int shiftvalue, char *space, char *upper_string)
 {
-	int take_input, loop;
+	int take_input, loop, ascii_plaintext[2];
 	loop = 0;
 	printf("\n Please input the sentence you would like to encrypt:");
 	while((take_input = getchar()) != '\n' && take_input != EOF)
-	{
-		plaintext[loop] = take_input;
+	{	
+		ascii_plaintext[loop] = take_input;
 		loop++;
 		fflush(stdin);
 		if(loop >= 99)
@@ -91,20 +91,22 @@ char encrypt(char *plaintext, char *ciphertext, int lenplaintext, int *shiftvalu
 		}
 
 	}
+	int i;
+	for(i=0; i< sizeof(ascii_plaintext); i++)
+	{
+		printf("\n Character in ascii: %d", ascii_plaintext[i]);
+		char temp_char = ascii_plaintext[i];
+		plaintext[i] = temp_char;
+		printf("\n Character in plaintext: %c", plaintext[i]);
+		
+	}
+	printf("\n Here is string inputted %s", plaintext);
 	loop = 0;
 	printf("\n Please input the shift amount: ");
-	while((take_input = getchar()) != '\n' && take_input != EOF)
-	{
-		shiftvalue[loop] = take_input;
-		loop++;
-		fflush(stdin);
-		if(loop >= 9);
-		{
-			printf("\n Sorry, input is too large!");
-			break;
-		}
-	}
-	lenplaintext = strlen(plaintext); // length of plaintext found //
+	shiftvalue = getchar();
+	printf("\n Works here");
+	lenplaintext = strlen(plaintext);	// length of plaintext found //
+	printf("\n Works here");
 	revised_upper(lenplaintext, plaintext, upper_string); // calls revised_upper function //
 	revised_string_check(space, upper_string, ciphertext, shiftvalue); // calls revised_string_check function // 
 	printf("\n The correct ciphertext should appear to be %s", ciphertext);
@@ -188,6 +190,7 @@ char revised_upper(char *string,char *upper_string)
 {
 	int loop, string_length;
 
+	printf("%d", loop);
 	string_length = strlen(string); // gets length of string // 
 	//this re-initialises upper_string so it the variable can be re-used // 
 	for(loop=0;loop<string_length;loop++) // Creates loop which
